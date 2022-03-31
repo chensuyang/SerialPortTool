@@ -68,16 +68,6 @@
      <string>打开串口</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="RevDatatextEdit">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>120</y>
-      <width>951</width>
-      <height>441</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
@@ -150,9 +140,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>590</y>
+      <y>610</y>
       <width>951</width>
-      <height>161</height>
+      <height>141</height>
      </rect>
     </property>
    </widget>
@@ -160,7 +150,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>570</y>
+      <y>590</y>
       <width>71</width>
       <height>16</height>
      </rect>
@@ -221,9 +211,9 @@
    <widget class="QComboBox" name="UartTxPlugin_comboBox">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>180</x>
       <y>760</y>
-      <width>241</width>
+      <width>331</width>
       <height>31</height>
      </rect>
     </property>
@@ -233,14 +223,14 @@
      <rect>
       <x>20</x>
       <y>752</y>
-      <width>241</width>
+      <width>161</width>
       <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>AcadEref</family>
-      <pointsize>14</pointsize>
+      <pointsize>9</pointsize>
      </font>
     </property>
     <property name="text">
@@ -250,9 +240,9 @@
    <widget class="QComboBox" name="UartRxPlugin_comboBox">
     <property name="geometry">
      <rect>
-      <x>720</x>
+      <x>630</x>
       <y>88</y>
-      <width>241</width>
+      <width>331</width>
       <height>31</height>
      </rect>
     </property>
@@ -262,18 +252,54 @@
      <rect>
       <x>480</x>
       <y>80</y>
-      <width>241</width>
+      <width>151</width>
       <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>AcadEref</family>
-      <pointsize>14</pointsize>
+      <pointsize>9</pointsize>
      </font>
     </property>
     <property name="text">
      <string>当前使用的数据接收修饰器:</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="Save_Rev_Data_CheckBox">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>80</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>保存接收的数据到文件</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="Save_Win_Data_CheckBox">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>80</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>保存窗口中的数据到文件</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="RevDataTextBrowser">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>120</y>
+      <width>961</width>
+      <height>471</height>
+     </rect>
     </property>
    </widget>
   </widget>

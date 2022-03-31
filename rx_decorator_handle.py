@@ -63,8 +63,34 @@ def free():
     if _current_rx_decorator_module is not None:
         _current_rx_decorator_module.destroy()
 
+def rgb_to_html_color(rgb_tuple):
+    hexcolor = '#%02x%02x%02x' % rgb_tuple
+    return hexcolor
+
+def string_to_html_filter(str_data):
+   #注意这几行代码的顺序不能乱，否则会造成多次替换
+   str_data = str_data.replace("&","&amp;")
+   str_data = str_data.replace(">","&gt;")
+   str_data = str_data.replace("<","&lt;")
+   str_data = str_data.replace("\"","&quot;")
+   str_data = str_data.replace("\'","&#39;")
+   str_data = str_data.replace(" ","&nbsp;")
+   str_data = str_data.replace("\n","<br>")
+   str_data = str_data.replace("\r","<br>")
+   return str_data
+
+def stringToHtml(str_data,color):
+    return "<span style=\" color:" + rgb_to_html_color(color) + ";\">" + str_data + "</span>"
+
+
 # 通过载入的RX修饰器转换
 def convert(bytes_data):
+    output_flag = True
     if _current_rx_decorator_module is not None:
-        ret_str,is_html = _current_rx_decorator_module.convert(bytes_data,False)
-        return ret_str
+        ret_str, is_html = _current_rx_decorator_module.convert(bytes_data, False)
+        if len(ret_str) == 0:
+            output_flag = False
+        if is_html:
+            return ret_str, output_flag
+        else:
+            return stringToHtml(string_to_html_filter(ret_str),(85, 85, 85)),output_flag
