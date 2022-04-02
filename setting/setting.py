@@ -8,7 +8,7 @@ global config
 
 def init():
     global config
-    setting_file = sys.path[0] + "\\setting.ini"
+    setting_file = os.getcwd() + "\\setting.ini"
     config = ConfigObj(setting_file, encoding='UTF8')
 
 

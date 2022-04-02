@@ -10,7 +10,7 @@ global _current_rx_decorator_module
 # 初始化RX修饰器处理
 def init():
     global _rx_decorator_module_dir
-    _rx_decorator_module_dir = sys.path[0] + "\\rx_decorator\\"
+    _rx_decorator_module_dir = os.getcwd() + "\\rx_decorator\\"
     print("rx_decorator枚举目录:" + _rx_decorator_module_dir)
     sys.path.append(_rx_decorator_module_dir)
 
