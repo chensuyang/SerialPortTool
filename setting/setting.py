@@ -70,3 +70,19 @@ def set_dtr(dtr):
     else:
         config['uart']['dtr'] = "false"
     config.write()
+
+
+
+def get_rx_decorator_name():
+    global config
+    try:
+        rx_decorator_name = config['main_setting']['rx_decorator_name']
+        return str(rx_decorator_name)
+    except:
+        return 115200
+
+
+def set_rx_decorator_name(rx_decorator_name):
+    global config
+    config['main_setting']['rx_decorator_name'] = rx_decorator_name
+    config.write()

@@ -88,7 +88,7 @@ def convert(bytes_data):
     output_flag = True
     if _current_rx_decorator_module is not None:
         ret_str, is_html = _current_rx_decorator_module.convert(bytes_data, False)
-        if len(ret_str) == 0:
+        if ret_str is None or len(ret_str) == 0:
             output_flag = False
         if is_html:
             return ret_str, output_flag
