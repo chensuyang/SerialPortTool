@@ -44,5 +44,8 @@ def set_dtr_state(state):
 
 def read():
     global current_opened_uart
-    read_data = current_opened_uart.read(1024)
-    return read_data
+    try:
+        read_data = current_opened_uart.read(1024)
+        return read_data,True
+    except:
+        return None,False

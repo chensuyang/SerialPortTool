@@ -104,31 +104,38 @@ def convert(bytes_data, series):
             bytes_data_idle_time_cnt = bytes_data_idle_time_cnt + 1
 
     if series:
-        return bytes_data
+        return bytes_data,False
     else:
         if len(bytes_data):
             str_buf = str_buf + bytes_data
 
-        # 用换行符分割数据
-        partition_str = str_buf.split(b"\r\n", 1)
+        out_data = ""
+        fund_flag = False
+        while True:
+            # 用换行符分割数据
+            partition_str = str_buf.split(b"\r\n", 1)
 
-        # 如果有找到有效的文本行
-        if len(partition_str) > 1:
-            # 开始转换
-            converted_str, color = ansi_color_str_convert(partition_str[0])
+            # 如果有找到有效的文本行
+            if len(partition_str) > 1:
+                # 开始转换
+                converted_str, color = ansi_color_str_convert(partition_str[0]+b"\r\n")
 
-            # 将剩余的文本放回str_buf
-            str_buf = partition_str[1]
-
-            # 如果有有效的转换结果
-            if converted_str != None and len(converted_str):
-                return stringToHtml(string_to_html_filter(converted_str), color), True
-        else:
-            # 如果没有找到有效的文本行,且已经有50次没有输出,则强制输出
-            if bytes_data_idle_time_cnt > 50 and len(partition_str[0]):
-                # 清空缓冲区
-                str_buf = ""
-                color = (85, 85, 85)
-                out = str(partition_str[0], encoding='gb2312', errors='ignore')
-                return stringToHtml(string_to_html_filter(out), color), True
-        return "", True
+                # 如果有有效的转换结果
+                if converted_str is not None and len(converted_str):
+                    # 将剩余的文本放回str_buf
+                    str_buf = partition_str[1]
+                    out_data = out_data + stringToHtml(string_to_html_filter(converted_str), color)
+                    fund_flag = True
+            else:
+                break
+        if fund_flag:
+            return out_data,True
+        # 如果没有找到有效的文本行,且已经有50次没有输出,则强制输出
+        if bytes_data_idle_time_cnt > 50 and len(str_buf):
+            print("超时打印")
+            color = (85, 85, 85)
+            out = str(str_buf, encoding='gb2312', errors='ignore')
+            # 清空缓冲区
+            str_buf = ""
+            return stringToHtml(string_to_html_filter(out), color), True
+    return "", True
