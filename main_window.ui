@@ -27,6 +27,32 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="7" column="8">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="0" rowspan="3" colspan="9">
+     <widget class="QTextEdit" name="RevDataTextEdit">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
+      <property name="lineWrapMode">
+       <enum>QTextEdit::NoWrap</enum>
+      </property>
+     </widget>
+    </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
       <property name="font">
@@ -40,85 +66,6 @@
       </property>
      </widget>
     </item>
-    <item row="9" column="2" colspan="5">
-     <widget class="QComboBox" name="UartTxPlugin_comboBox">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="5">
-     <widget class="QCheckBox" name="DTR_CheckBox">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>DTR</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="3" colspan="3">
-     <widget class="QCheckBox" name="Save_Rev_Data_CheckBox">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>保存接收的数据到文件</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0" colspan="2">
-     <widget class="QLabel" name="label_3">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>接收内容:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="0" colspan="2">
-     <widget class="QLabel" name="label_5">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>当前使用的数据发送修饰器:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1" colspan="3">
-     <widget class="QComboBox" name="BaudRate_comboBox">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="8">
-     <widget class="QPushButton" name="SendDatapushButton">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>发送数据</string>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="4">
      <widget class="QCheckBox" name="RTS_CheckBox">
       <property name="font">
@@ -128,28 +75,6 @@
       </property>
       <property name="text">
        <string>RTS</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="6">
-     <widget class="QLabel" name="label_6">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>当前使用的数据接收修饰器:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="7" colspan="2">
-     <widget class="QComboBox" name="UartRxPlugin_comboBox">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
       </property>
      </widget>
     </item>
@@ -166,102 +91,6 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="0">
-     <widget class="QLabel" name="label_4">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>发送内容:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="0" colspan="9">
-     <widget class="QTextEdit" name="SendDatatextEdit"/>
-    </item>
-    <item row="2" column="0" colspan="3">
-     <widget class="QCheckBox" name="Save_Win_Data_CheckBox">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>保存窗口中的数据到文件</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="6">
-     <widget class="QPushButton" name="OpenUartpushButton">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>打开串口</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="7">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Expanding</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>600</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="9" column="7">
-     <spacer name="horizontalSpacer_3">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="4" column="0" rowspan="3" colspan="9">
-     <widget class="QTextBrowser" name="RevDataTextBrowser">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="lineWidth">
-       <number>1</number>
-      </property>
-      <property name="lineWrapMode">
-       <enum>QTextEdit::NoWrap</enum>
-      </property>
-      <property name="openExternalLinks">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="8">
-     <widget class="QPushButton" name="ClearRevWinDataButton">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>清空窗口接收数据</string>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="1" colspan="5">
      <widget class="QComboBox" name="UartNumber_comboBox">
       <property name="font">
@@ -272,15 +101,13 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="10" rowspan="9">
-     <widget class="QTabWidget" name="tabWidget">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-       </font>
-      </property>
-      <property name="currentIndex">
-       <number>-1</number>
+    <item row="8" column="0" colspan="9">
+     <widget class="QTextEdit" name="SendDatatextEdit"/>
+    </item>
+    <item row="2" column="0" colspan="2">
+     <widget class="QPushButton" name="Save_Window_Data_Button">
+      <property name="text">
+       <string>保存窗口中的内容到文件</string>
       </property>
      </widget>
     </item>
@@ -300,8 +127,140 @@
       </property>
      </spacer>
     </item>
-    <item row="7" column="8">
-     <spacer name="horizontalSpacer_2">
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>发送内容:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="2">
+     <widget class="QLabel" name="label_3">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>接收内容:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="2" colspan="5">
+     <widget class="QComboBox" name="UartTxPlugin_comboBox">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="6">
+     <widget class="QLabel" name="label_6">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>当前使用的数据接收修饰器:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="7">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Expanding</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>600</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="3" column="7" colspan="2">
+     <widget class="QComboBox" name="UartRxPlugin_comboBox">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="5">
+     <widget class="QCheckBox" name="DTR_CheckBox">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>DTR</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0" colspan="2">
+     <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>当前使用的数据发送修饰器:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="8">
+     <widget class="QPushButton" name="SendDatapushButton">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>发送数据</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="10" rowspan="9">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="currentIndex">
+       <number>-1</number>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="6">
+     <widget class="QPushButton" name="OpenUartpushButton">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>打开串口</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="7">
+     <spacer name="horizontalSpacer_3">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -312,6 +271,39 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="1" column="1" colspan="3">
+     <widget class="QComboBox" name="BaudRate_comboBox">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3" colspan="3">
+     <widget class="QCheckBox" name="Save_Rev_Data_CheckBox">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>保存接收的数据到文件</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="8">
+     <widget class="QPushButton" name="ClearRevWinDataButton">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>清空接收内容</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

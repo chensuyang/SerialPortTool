@@ -8,6 +8,8 @@ import rx_decorator_handle
 import tx_decorator_handle
 import time
 from setting import setting
+import os
+import pprint
 
 # 当前PC中所有被枚举出的串口信息列表
 global g_current_uart_info_list
@@ -19,7 +21,7 @@ g_current_opened_uart_info = None
 
 class UpdateThread(QThread):
     # 实时显示追加线程（要继承QThread， 继承threading.Thread不行）
-    rev_data_text_browser_append_text_signal = pyqtSignal(str)  # 接收数据文本浏览器添加文本信号
+    rev_data_text_edit_append_text_signal = pyqtSignal(str)  # 接收数据文本浏览器添加文本信号
     uart_read_fail_signal = pyqtSignal()  # 串口读取失败信号
 
     def run(self):
@@ -34,7 +36,7 @@ class UpdateThread(QThread):
                     append_str, output_flag = rx_decorator_handle.convert(read_data)
                     # 如果有有效数据,则更新到界面
                     if append_str is not None and len(append_str) and output_flag:
-                        self.rev_data_text_browser_append_text_signal.emit(append_str)  # 发射信号(实参类型要和定义信号的参数类型一致)
+                        self.rev_data_text_edit_append_text_signal.emit(append_str)  # 发射信号(实参类型要和定义信号的参数类型一致)
                 else:
                     self.uart_read_fail_signal.emit()  # 发射信号
             time.sleep(0.05)
@@ -53,7 +55,7 @@ class MainWindowWork(QtWidgets.QMainWindow):
         setting.init()
 
         # 设置显示接收数据的textEdit为只读
-        self.ui.RevDataTextBrowser.setReadOnly(True)
+        self.ui.RevDataTextEdit.setReadOnly(True)
 
         # 更新全局的当前串口信息列表,并根据列表刷新界面上的串口选择列表
         global g_current_uart_info_list
@@ -95,6 +97,8 @@ class MainWindowWork(QtWidgets.QMainWindow):
         self.ui.DTR_CheckBox.setChecked(setting.get_dtr())
 
         # UI事件绑定
+        self.ui.Save_Window_Data_Button.clicked.connect(self.save_win_data_button_callback)
+        self.ui.Save_Rev_Data_CheckBox.stateChanged.connect(self.save_rev_data_check_box_changed_callback)
         self.ui.OpenUartpushButton.clicked.connect(self.open_uart_button_callback)
         self.ui.RTS_CheckBox.stateChanged.connect(self.rts_check_box_changed_callback)
         self.ui.DTR_CheckBox.stateChanged.connect(self.dtr_check_box_changed_callback)
@@ -113,15 +117,14 @@ class MainWindowWork(QtWidgets.QMainWindow):
 
         # 5.实时追加文本(采用多线程方式追加，不然界面会卡死)
         self.update_thread = UpdateThread()
-        self.update_thread.rev_data_text_browser_append_text_signal.connect(
-            self.slot_rev_data_text_browser_append_str)  # 连接槽函数
+        self.update_thread.rev_data_text_edit_append_text_signal.connect(
+            self.slot_rev_data_text_edit_append_str)  # 连接槽函数
         self.update_thread.uart_read_fail_signal.connect(self.slot_auto_close_uart)  # 连接槽函数
         self.update_thread.start()
 
-    def slot_rev_data_text_browser_append_str(self, text):
-        # text_browser槽函数
-        self.ui.RevDataTextBrowser.moveCursor(self.ui.RevDataTextBrowser.textCursor().End)
-        self.ui.RevDataTextBrowser.insertHtml(text)
+    def slot_rev_data_text_edit_append_str(self, text):
+        self.ui.RevDataTextEdit.moveCursor(self.ui.RevDataTextEdit.textCursor().End)
+        self.ui.RevDataTextEdit.insertHtml(text)
 
     def slot_auto_close_uart(self):
         # 自动关闭串口
@@ -140,8 +143,25 @@ class MainWindowWork(QtWidgets.QMainWindow):
         self.ui.OpenUartpushButton.setText("打开串口")
         self.statusBar().showMessage("因串口故障而自动关闭串口")
 
+    def save_win_data_button_callback(self):
+        file_path = os.getcwd() + "\\" + str(time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime()) ) + "_rev_window_data_save.txt"
+        QMessageBox.information(self, "记录到文件", "接收窗口中的数据将记录到" + file_path + "文件中", QMessageBox.Yes)
+        try:
+            file = open(file_path,"w")
+            file.write(self.ui.RevDataTextEdit.toPlainText())
+            file.close()
+        except:
+            QMessageBox.warning(self, "记录到文件","保存文件失败", QMessageBox.Yes)
+
+    def save_rev_data_check_box_changed_callback(self):
+        if self.ui.Save_Rev_Data_CheckBox.isChecked():
+            file_path = os.getcwd() + "\\rev_data_save.txt"
+            QMessageBox.information(self, "记录到文件", "接收的串口数据将记录到" + file_path + "文件中", QMessageBox.Yes)
+        else:
+            pass
+
     def clear_rev_win_data_callback(self):
-        self.ui.RevDataTextBrowser.clear()
+        self.ui.RevDataTextEdit.clear()
 
     def rx_plugin_combo_box_current_index_changed_callback(self):
         setting.set_rx_decorator_name(self.ui.UartRxPlugin_comboBox.currentText())

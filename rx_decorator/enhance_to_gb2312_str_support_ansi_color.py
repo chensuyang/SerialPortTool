@@ -47,7 +47,6 @@ def string_to_html_filter(str_data):
 def stringToHtml(str_data, color):
     return "<span style=\" color:" + rgb_to_html_color(color) + ";\">" + str_data + "</span>"
 
-
 RE_ANSI_COLOR = re.compile(b'\033\\[([01]);3([0-7])m')
 ANSI_COLOR_END = re.compile(b'\033\[0m')
 
@@ -123,7 +122,7 @@ def convert(bytes_data, series):
             # 如果有找到有效的文本行
             if len(partition_str) > 1:
                 # 开始转换
-                converted_str, color = ansi_color_str_convert(partition_str[0] + b"\r\n")
+                converted_str, color = ansi_color_str_convert(partition_str[0])
                 # 如果有有效的转换结果
                 if converted_str is not None and len(converted_str):
                     # 将剩余的文本放回str_buf
