@@ -38,8 +38,8 @@ def string_to_html_filter(str_data):
     str_data = str_data.replace(" ", "&nbsp;")
     str_data = str_data.replace("\r\n", "<br>")
     str_data = str_data.replace("\n\r", "<br>")
-    str_data = str_data.replace('\n', "<br>")
-    str_data = str_data.replace('\r', "<br>")
+    #str_data = str_data.replace('\n', "<br>")
+    #str_data = str_data.replace('\r', "<br>")
     # print(str_data)
     return str_data
 
@@ -122,7 +122,7 @@ def convert(bytes_data, series):
             # 如果有找到有效的文本行
             if len(partition_str) > 1:
                 # 开始转换
-                converted_str, color = ansi_color_str_convert(partition_str[0])
+                converted_str, color = ansi_color_str_convert(partition_str[0]+b"\r\n")
                 # 如果有有效的转换结果
                 if converted_str is not None and len(converted_str):
                     # 将剩余的文本放回str_buf

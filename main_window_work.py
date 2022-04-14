@@ -144,14 +144,15 @@ class MainWindowWork(QtWidgets.QMainWindow):
         self.statusBar().showMessage("因串口故障而自动关闭串口")
 
     def save_win_data_button_callback(self):
-        file_path = os.getcwd() + "\\" + str(time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime()) ) + "_rev_window_data_save.txt"
+        file_path = os.getcwd() + "\\" + str(
+            time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())) + "_rev_window_data_save.txt"
         QMessageBox.information(self, "记录到文件", "接收窗口中的数据将记录到" + file_path + "文件中", QMessageBox.Yes)
         try:
-            file = open(file_path,"w")
+            file = open(file_path, "w")
             file.write(self.ui.RevDataTextEdit.toPlainText())
             file.close()
         except:
-            QMessageBox.warning(self, "记录到文件","保存文件失败", QMessageBox.Yes)
+            QMessageBox.warning(self, "记录到文件", "保存文件失败", QMessageBox.Yes)
 
     def save_rev_data_check_box_changed_callback(self):
         if self.ui.Save_Rev_Data_CheckBox.isChecked():
