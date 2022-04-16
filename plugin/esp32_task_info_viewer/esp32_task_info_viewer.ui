@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>316</width>
+    <height>595</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="free_internal_memory_label">
+     <property name="text">
+      <string>剩余内存(内部):</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="free_internal_memory_pushButton">
+     <property name="text">
+      <string>查看历史图表</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="free_external_memory_label">
+     <property name="text">
+      <string>剩余内存(外部):</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="free_external_memory_pushButton">
+     <property name="text">
+      <string>查看历史图表</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Task信息:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="TaskInfotableWidget">
+     <column>
+      <property name="text">
+       <string>名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>CPU百分比</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>最小剩余栈空间</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>状态</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>优先级</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>复制对应以上功能的ESP32代码</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

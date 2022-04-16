@@ -120,6 +120,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         self.tabWidget.setFont(font)
+        self.tabWidget.setTabPosition(QtWidgets.QTabWidget.East)
         self.tabWidget.setObjectName("tabWidget")
         self.gridLayout.addWidget(self.tabWidget, 1, 10, 9, 1)
         self.OpenUartpushButton = QtWidgets.QPushButton(self.centralwidget)

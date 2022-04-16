@@ -242,6 +242,9 @@
         <family>微软雅黑</family>
        </font>
       </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::East</enum>
+      </property>
       <property name="currentIndex">
        <number>-1</number>
       </property>

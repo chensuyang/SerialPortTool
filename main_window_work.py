@@ -10,6 +10,7 @@ import time
 from setting import setting
 import os
 import pprint
+import plugin_handle
 
 # 当前PC中所有被枚举出的串口信息列表
 global g_current_uart_info_list
@@ -32,11 +33,22 @@ class UpdateThread(QThread):
 
                 read_data, state = uart_handle.read()
                 if state:
-                    # 调用RX修饰器来转换串口的数据
-                    append_str, output_flag = rx_decorator_handle.convert(read_data)
-                    # 如果有有效数据,则更新到界面
-                    if append_str is not None and len(append_str) and output_flag:
-                        self.rev_data_text_edit_append_text_signal.emit(append_str)  # 发射信号(实参类型要和定义信号的参数类型一致)
+                    # 调用插件
+                    ret, discard, out = plugin_handle.uart_rev_data(read_data)
+
+                    # 如果插件处理完成
+                    if ret:
+                        # 如果当前插件不丢弃数据,则调用RX修饰器来输出数据
+                        if not discard:
+                            # 调用RX修饰器来转换串口的数据
+                            append_str, output_flag = rx_decorator_handle.convert(read_data)
+                            # 如果有有效数据,则更新到界面
+                            if append_str is not None and len(append_str) and output_flag:
+                                self.rev_data_text_edit_append_text_signal.emit(append_str)  # 发射信号(实参类型要和定义信号的参数类型一致)
+
+                        # 判断插件是否需要输出数据
+                        if out is not None:
+                            self.rev_data_text_edit_append_text_signal.emit(str(out))  # 发射信号(实参类型要和定义信号的参数类型一致
                 else:
                     self.uart_read_fail_signal.emit()  # 发射信号
             time.sleep(0.05)
@@ -92,6 +104,9 @@ class MainWindowWork(QtWidgets.QMainWindow):
                 self.ui.UartRxPlugin_comboBox.setCurrentIndex(i)
             i = i + 1
 
+        # 初始化插件处理
+        plugin_handle.init(self.ui.tabWidget)
+
         # 根据存储的配置设置RTS DTR选择框
         self.ui.RTS_CheckBox.setChecked(setting.get_rts())
         self.ui.DTR_CheckBox.setChecked(setting.get_dtr())
@@ -121,6 +136,8 @@ class MainWindowWork(QtWidgets.QMainWindow):
             self.slot_rev_data_text_edit_append_str)  # 连接槽函数
         self.update_thread.uart_read_fail_signal.connect(self.slot_auto_close_uart)  # 连接槽函数
         self.update_thread.start()
+
+
 
     def slot_rev_data_text_edit_append_str(self, text):
         self.ui.RevDataTextEdit.moveCursor(self.ui.RevDataTextEdit.textCursor().End)
