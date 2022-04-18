@@ -1,0 +1,55 @@
+
+
+/*******************************************************************************
+*                           陈苏阳@2022-04-17
+* Function Name  :  esp32_task_info_viewer
+* Description    :  输出task任务信息
+* Return         :  void
+*******************************************************************************/
+void esp32_task_info_viewer(void)
+{
+    uint32_t uiTaskNumber = uxTaskGetNumberOfTasks();
+    char* pbuffer = (char*)calloc(1, 2048);
+    uint32_t ulTotalTime;
+    memset(pbuffer, 0x00, 1024);
+    uint32_t free_internal_heap_size = heap_caps_get_free_size(MALLOC_CAP_8BIT | MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
+    uint32_t free_spi_ram_heap_size = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
+    sprintf(pbuffer, "esp32_task_info_viewer_s,%d,%d,", free_internal_heap_size, free_spi_ram_heap_size);
+
+    TaskStatus_t* pTaskStateArray = calloc(uiTaskNumber, sizeof(TaskStatus_t));
+    if (pTaskStateArray)
+    {
+        uxTaskGetSystemState(pTaskStateArray, uiTaskNumber, &ulTotalTime);
+
+        /* For percentage calculations. */
+        ulTotalTime /= 100UL;
+        for (uint8_t i = 0; i < uiTaskNumber; i++)
+        {
+            if(pTaskStateArray[i].pcTaskName==NULL || strlen(pTaskStateArray[i].pcTaskName)==0)
+            {
+                strcat(&pbuffer[strlen(pbuffer)], "NULL");
+            }
+            else
+            {
+                strcat(&pbuffer[strlen(pbuffer)], pTaskStateArray[i].pcTaskName);
+            }
+            sprintf(&pbuffer[strlen(pbuffer)], ",%d,", (uint8_t)(pTaskStateArray[i].eCurrentState));
+            sprintf(&pbuffer[strlen(pbuffer)], "%d,", (uint32_t)(pTaskStateArray[i].uxCurrentPriority));
+            sprintf(&pbuffer[strlen(pbuffer)], "%d,", (uint32_t)(pTaskStateArray[i].usStackHighWaterMark));
+            uint8_t ucStatsAsPercentage = 0;
+            if (ulTotalTime > 0)
+            {
+                ucStatsAsPercentage = (pTaskStateArray[i].ulRunTimeCounter / portNUM_PROCESSORS) / ulTotalTime;
+            }
+            sprintf(&pbuffer[strlen(pbuffer)], "%d,", ucStatsAsPercentage);
+        }
+        strcat(&pbuffer[strlen(pbuffer)], "esp32_task_info_viewer_e\r\n");
+        printf("%s", pbuffer);
+        free(pbuffer);
+        free(pTaskStateArray);
+    }
+    else
+    {
+        free(pbuffer);
+    }
+}

@@ -17,10 +17,7 @@ def init(tab_widget):
 
 # 串口收到数据处理函数
 def uart_rev_data(bytes_data):
-    ret = True
-    discard = False
-    out = None
-    return ret, discard, out
+    return plugin.esp32_task_info_viewer.plugin_main.uart_rev_data(bytes_data)
 
 
 # 设置全局设置对象
