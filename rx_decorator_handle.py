@@ -25,7 +25,7 @@ def get_name(file_name):
     name = None
     try:
         tmp_decorator_module = __import__(file_name)
-        name = tmp_decorator_module.DECORATOR_NAME
+        name = tmp_decorator_module.NAME
     except:
         name = None
     return name
@@ -52,7 +52,7 @@ def load(name):
     global _current_rx_decorator_module
     _current_rx_decorator_module = _rx_decorator_module_name_to_module_obj_dict[name]
 
-    print("当前载入的RX修饰器名称:" + _current_rx_decorator_module.DECORATOR_NAME)
+    print("当前载入的RX修饰器名称:" + _current_rx_decorator_module.NAME)
 
     # 初始化修饰器
     _current_rx_decorator_module.init()

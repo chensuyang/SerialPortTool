@@ -5,7 +5,7 @@ global str_buf
 global bytes_data_idle_time_cnt
 
 # 修饰器名字(必须存在),会显示在软件界面的下拉列表里
-DECORATOR_NAME = "增强修饰器-转换到gb2312编码的文本(支持ANSI着色)"
+NAME = "增强修饰器-转换到gb2312编码的文本(支持ANSI着色)"
 
 
 # 修饰器开始工作时调用

@@ -20,6 +20,9 @@ global task_cpu_time_percentage
 global plugin_window
 
 
+# 插件名字(必须存在),会显示在软件界面
+NAME = "ESP32任务信息显示器"
+
 class PluginWindowWork(QtWidgets.QWidget):
 
     def __init__(self):
@@ -46,7 +49,6 @@ class PluginWindowWork(QtWidgets.QWidget):
         for i in range(len(task_name)):
             # 添加数据
             newItem = QTableWidgetItem(task_name[i])
-            print(task_name[i])
             self.ui.TaskInfotableWidget.setItem(i, 0, newItem)
 
             newItem = QTableWidgetItem(str(task_cpu_time_percentage[i]))
