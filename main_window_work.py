@@ -69,6 +69,9 @@ class MainWindowWork(QtWidgets.QMainWindow):
         # 设置显示接收数据的textEdit为只读
         self.ui.RevDataTextEdit.setReadOnly(True)
 
+        # 设置显示接收数据的textEdit最大显示行数
+        self.ui.RevDataTextEdit.document().setMaximumBlockCount(1000)
+
         # 更新全局的当前串口信息列表,并根据列表刷新界面上的串口选择列表
         global g_current_uart_info_list
         g_current_uart_info_list = uart_handle.get_current_uart_info_list()

@@ -4,7 +4,9 @@ from PyQt5.QtCore import QThread, pyqtSignal, QObject
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
-
+import matplotlib.pyplot as plt
+import numpy as np
+import time
 import re
 import pprint
 
@@ -19,9 +21,14 @@ global task_stack_high_water_mark
 global task_cpu_time_percentage
 global plugin_window
 
+global record_start_timestamp
+global free_internal_memory_history_data
+global free_memory_history_timestamp
+global free_external_memory_history_data
 
 # 插件名字(必须存在),会显示在软件界面
 NAME = "ESP32任务信息显示器"
+
 
 class PluginWindowWork(QtWidgets.QWidget):
 
@@ -29,6 +36,31 @@ class PluginWindowWork(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         self.ui = esp32_task_info_viewer.Ui_Form()
         self.ui.setupUi(self)
+
+        self.ui.free_external_memory_pushButton.clicked.connect(self.show_free_external_memory_history_data)
+        self.ui.free_internal_memory_pushButton.clicked.connect(self.show_free_internal_memory_history_data)
+
+    def show_free_external_memory_history_data(self):
+        pprint.pprint(free_memory_history_timestamp)
+        pprint.pprint(free_external_memory_history_data)
+        plt.figure(figsize=(8, 6))  # 定义图的大小
+        plt.xlabel("time(s)")  # X轴标签
+        plt.ylabel("byte")  # Y轴坐标标签
+        plt.title("剩余内存(外部)历史曲线",fontproperties='SimHei')  # 曲线图的标题
+        plt.plot(free_memory_history_timestamp, free_external_memory_history_data)  # 绘制曲线图
+        plt.ticklabel_format(style='plain')
+        plt.show()
+
+    def show_free_internal_memory_history_data(self):
+        pprint.pprint(free_memory_history_timestamp)
+        pprint.pprint(free_internal_memory_history_data)
+        plt.figure(figsize=(8, 6))  # 定义图的大小
+        plt.xlabel("time(s)")  # X轴标签
+        plt.ylabel("byte")  # Y轴坐标标签
+        plt.title("剩余内存(外部)历史曲线",fontproperties='SimHei')  # 曲线图的标题
+        plt.plot(free_memory_history_timestamp, free_internal_memory_history_data)  # 绘制曲线图
+        plt.ticklabel_format(style='plain')
+        plt.show()
 
     def refresh_task_info(self):
         global free_internal_heap_size
@@ -57,7 +89,6 @@ class PluginWindowWork(QtWidgets.QWidget):
             newItem = QTableWidgetItem(str(task_stack_high_water_mark[i]))
             self.ui.TaskInfotableWidget.setItem(i, 2, newItem)
 
-
             if int(task_current_state[i]) == 0:
                 newItem = QTableWidgetItem("运行中")
             elif int(task_current_state[i]) == 1:
@@ -69,7 +100,7 @@ class PluginWindowWork(QtWidgets.QWidget):
             elif int(task_current_state[i]) == 4:
                 newItem = QTableWidgetItem("删除中")
             else:
-                newItem = QTableWidgetItem("未知状态:"+str(task_current_state[i]))
+                newItem = QTableWidgetItem("未知状态:" + str(task_current_state[i]))
             self.ui.TaskInfotableWidget.setItem(i, 3, newItem)
 
             newItem = QTableWidgetItem(str(task_current_priority[i]))
@@ -94,11 +125,20 @@ def init(tab_widget):
     global task_current_priority
     global task_stack_high_water_mark
     global task_cpu_time_percentage
+    global free_internal_memory_history_data
+    global free_memory_history_timestamp
+    global free_external_memory_history_data
+    global record_start_timestamp
     task_name = []
     task_current_state = []
     task_current_priority = []
     task_stack_high_water_mark = []
     task_cpu_time_percentage = []
+    free_internal_memory_history_data = []
+    free_memory_history_timestamp = []
+    free_external_memory_history_data = []
+    record_start_timestamp = 0
+
 
 def uart_rev_data(bytes_data):
     ret = True
@@ -125,6 +165,20 @@ def uart_rev_data(bytes_data):
         global task_cpu_time_percentage
         free_internal_heap_size = int(str_split[1])
         free_spi_ram_heap_size = int(str_split[2])
+
+        global free_internal_memory_history_data
+        global free_memory_history_timestamp
+        global free_external_memory_history_data
+        global record_start_timestamp
+
+        # 如果还没有开始时间戳,则记录当前时间为开始时间戳
+        if record_start_timestamp == 0:
+            record_start_timestamp = time.time()
+
+        # 记录历史数据
+        free_memory_history_timestamp.append(time.time() - record_start_timestamp)
+        free_internal_memory_history_data.append(free_internal_heap_size)
+        free_external_memory_history_data.append(free_spi_ram_heap_size)
 
         task_name.clear()
         task_current_state.clear()
