@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
 import main_window
 from PyQt5.QtCore import QThread, pyqtSignal, QObject
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox,QDesktopWidget
 import uart_handle
 from PyQt5.QtCore import QTimer
 import rx_decorator_handle
@@ -11,6 +11,10 @@ from setting import setting
 import os
 import pprint
 import plugin_handle
+from set_rev_data_text_edit_max_block_count_window import set_rev_data_text_edit_max_block_count_window_work
+import qtmodern.styles
+import qtmodern.windows
+
 
 # 当前PC中所有被枚举出的串口信息列表
 global g_current_uart_info_list
@@ -19,6 +23,7 @@ g_current_uart_info_list = None
 global g_current_opened_uart_info
 g_current_opened_uart_info = None
 
+global set_rev_data_text_edit_max_block_count_window
 
 class UpdateThread(QThread):
     # 实时显示追加线程（要继承QThread， 继承threading.Thread不行）
@@ -66,11 +71,10 @@ class MainWindowWork(QtWidgets.QMainWindow):
         # 初始化设置
         setting.init()
 
+        self.ui.set_rev_data_text_edit_max_block_count.triggered.connect(self.slot_set_rev_data_text_edit_max_block_count)
+
         # 设置显示接收数据的textEdit为只读
         self.ui.RevDataTextEdit.setReadOnly(True)
-
-        # 设置显示接收数据的textEdit最大显示行数
-        self.ui.RevDataTextEdit.document().setMaximumBlockCount(1000)
 
         # 更新全局的当前串口信息列表,并根据列表刷新界面上的串口选择列表
         global g_current_uart_info_list
@@ -140,6 +144,35 @@ class MainWindowWork(QtWidgets.QMainWindow):
         self.update_thread.uart_read_fail_signal.connect(self.slot_auto_close_uart)  # 连接槽函数
         self.update_thread.start()
 
+    def slot_set_rev_data_text_edit_max_block_count(self):
+        global set_rev_data_text_edit_max_block_count_window
+        set_rev_data_text_edit_max_block_count_window = set_rev_data_text_edit_max_block_count_window_work.SetRevDataTextEditMaxBlockCountWindowWork()
+        window = qtmodern.windows.ModernWindow(set_rev_data_text_edit_max_block_count_window)
+
+        # 获取窗口大小
+        screen = QDesktopWidget().screenGeometry()
+        size = window.geometry()
+
+        # 窗体运动
+        window.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
+        window.show()
+        set_rev_data_text_edit_max_block_count_window.ui.pushButton.clicked.connect(self.slot_update_rev_data_text_edit_max_block_count)
+
+        # 往窗口中添加可选择的块数量列表
+        block_count_list = [100,1000,2000,5000,10000]
+        for block_count in block_count_list:
+            set_rev_data_text_edit_max_block_count_window.add_block_count(str(block_count))
+
+
+    def slot_update_rev_data_text_edit_max_block_count(self):
+        global set_rev_data_text_edit_max_block_count_window
+        if set_rev_data_text_edit_max_block_count_window is not None:
+            setting.set_rev_data_text_edit_max_block_count(int(set_rev_data_text_edit_max_block_count_window.ui.comboBox.currentText()))
+            set_rev_data_text_edit_max_block_count_window.close()
+
+            # 设置显示接收数据的textEdit最大显示行数
+            self.ui.RevDataTextEdit.document().setMaximumBlockCount(setting.get_rev_data_text_edit_max_block_count())
+            print("update_rev_data_text_edit_max_block_count:"+str(setting.get_rev_data_text_edit_max_block_count()))
 
 
     def slot_rev_data_text_edit_append_str(self, text):

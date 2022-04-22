@@ -79,10 +79,24 @@ def get_rx_decorator_name():
         rx_decorator_name = config['main_setting']['rx_decorator_name']
         return str(rx_decorator_name)
     except:
-        return 115200
+        return ""
 
 
 def set_rx_decorator_name(rx_decorator_name):
     global config
     config['main_setting']['rx_decorator_name'] = rx_decorator_name
+    config.write()
+
+
+def get_rev_data_text_edit_max_block_count():
+    global config
+    try:
+        rev_data_text_edit_max_block_count = config['main_setting']['rev_data_text_edit_max_block_count']
+        return int(rev_data_text_edit_max_block_count)
+    except:
+        return 1000
+
+def set_rev_data_text_edit_max_block_count(max_block_count):
+    global config
+    config['main_setting']['rev_data_text_edit_max_block_count'] = max_block_count
     config.write()
